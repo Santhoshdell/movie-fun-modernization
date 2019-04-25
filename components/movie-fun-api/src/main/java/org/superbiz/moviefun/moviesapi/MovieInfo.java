@@ -1,30 +1,15 @@
-package org.superbiz.moviefun.movies;
+package org.superbiz.moviefun.moviesapi;
 
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.io.Serializable;
+import java.util.Objects;
 
-@Entity
-public class Movie implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
-
-    private String director;
-    private String title;
-    private int year;
-    private String genre;
-    private int rating;
-
-    public Movie() {
+public class MovieInfo {
+    public MovieInfo() {
     }
 
-    public Movie(String title, String director, String genre, int rating, int year) {
+    public MovieInfo(String title, String director, String genre, int rating, int year) {
         this.director = director;
         this.title = title;
         this.year = year;
@@ -32,10 +17,33 @@ public class Movie implements Serializable {
         this.rating = rating;
     }
 
-    public Movie(String director, String title, int year) {
+    public MovieInfo(String director, String title, int year) {
         this.director = director;
         this.title = title;
         this.year = year;
+    }
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private String director;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof MovieInfo)) return false;
+        MovieInfo movieInfo = (MovieInfo) o;
+        return getId() == movieInfo.getId() &&
+                getYear() == movieInfo.getYear() &&
+                getRating() == movieInfo.getRating() &&
+                Objects.equals(getDirector(), movieInfo.getDirector()) &&
+                Objects.equals(getGenre(), movieInfo.getGenre());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getDirector(), getYear(), getGenre(), getRating());
     }
 
     public long getId() {
@@ -85,4 +93,11 @@ public class Movie implements Serializable {
     public void setRating(int rating) {
         this.rating = rating;
     }
+
+    private String title;
+    private int year;
+    private String genre;
+    private int rating;
+
+
 }
